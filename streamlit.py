@@ -1,15 +1,34 @@
-# Navigate to your project folder
-cd path/to/your-streamlit-app
+## Q&A Chatbot
+from langchain.llms import OpenAI
 
-# Initialize Git
-git init
+from dotenv import load_dotenv
 
-# Add your GitHub repo as remote
-git remote add origin https://github.com/your-username/my-streamlit-app.git
+load_dotenv()  # take environment variables from .env.
 
-# Add and commit your files
-git add .
-git commit -m "Initial commit"
+import streamlit as st
+import os
 
-# Push to GitHub
-git push -u origin master
+
+# Function to load the OpenAI model and get response
+
+def get_openai_response(Question):
+    llm = OpenAI(openai_api_key=os.getenv("OPEN_API_KEY"),model_name="text_davinci-003",temperature=0.5)
+    response = llm(Question)
+    return response
+
+## Intializing the streamlit app
+
+st.set_page_config(page_title="Q&A Demo")
+
+st.header("Langchain Application")
+
+input=st.text_input("Input: ",key="input")
+response=get_openai_response(input)
+
+submit=st.button("Ask the question")
+
+## if ask button is clicked
+
+if submit:
+    st.subheader("The Response is")
+    st.write(response
